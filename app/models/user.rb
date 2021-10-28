@@ -5,4 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :loans
 
+  def can_loan?
+    Loan.where(user: self, return_date: nil).count < 3
+  end
+
+  def loans
+    Loan.where(user_id: self.id)
+  end
 end
