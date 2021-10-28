@@ -16,7 +16,7 @@ RSpec.describe LibraryApp::API::V1::Base do
 
     it 'should return status 401 on bad credentials' do
       post '/api/library_app/v1/users/authenticate', params: { email: 'igor@gmail.com', password: '111' },
-           headers: headers
+                                                     headers: headers
       expect(response.body).to include('Wrong username or password')
       expect(response.status).to eq(401)
     end

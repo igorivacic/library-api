@@ -10,6 +10,6 @@ class User < ApplicationRecord
   end
 
   def loans
-    Loan.where(user_id: self.id)
+    Loan.where(user_id: id)
   end
 end
