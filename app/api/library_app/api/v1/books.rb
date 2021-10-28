@@ -21,15 +21,14 @@ class LibraryApp::API::V1::Books < Grape::API
       book = Book.new(params)
       if book.save!
         status 201
-        { data: { book: book.title } }
-        # return success message
+        'Book was successfully created.'
       else
         error!('Bad parameters!', 400)
       end
     end
 
     desc 'Get All Books'
-    get "",skip_filter: :authenticate do
+    get "", skip_filter: :authenticate do
       status 200
       { data: { book: Book.all } }
     end
@@ -37,8 +36,8 @@ class LibraryApp::API::V1::Books < Grape::API
     desc 'Get a Book'
     get ':id', skip_filter: :authenticate do
       book = Book.find(params[:id])
+      { data: { book: book } }
       status 200
-      { book: { book: book } }
     end
 
     desc 'Delete a Book'
@@ -46,6 +45,7 @@ class LibraryApp::API::V1::Books < Grape::API
       book = Book.find(params[:id])
       if book.destroy
         status 200
+        'Book was successfully destroyed.'
       else
         status 400
       end
@@ -59,14 +59,13 @@ class LibraryApp::API::V1::Books < Grape::API
     end
     put ':id/edit' do
       if params['title'] == '' || params['number_of_hard_copies'] == '' || params['author_id'] == ''
-        error!('Bad parameters!',
-               400)
+        error!('Bad parameters!', 400)
       end
       book = Book.find(params[:id])
       book.update(title: params[:title], number_of_hard_copies: params[:number_of_hard_copies],
                   author_id: params[:author_id])
+      'Book was successfully updated.'
       status 201
-      { data: { title: book.title } }
     end
 
     get 'search' do
@@ -76,6 +75,5 @@ class LibraryApp::API::V1::Books < Grape::API
              WHERE title LIKE '%#{term}%' OR name LIKE '%#{term}%'"
       ActiveRecord::Base.connection.execute(sql)
     end
-
   end
 end
