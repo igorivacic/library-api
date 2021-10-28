@@ -34,5 +34,13 @@ class LibraryApp::API::V1::Books < Grape::API
       { data: { book: Book.all } }
     end
 
+    get 'search' do
+      term = params[:term]
+      sql = "SELECT authors.name, books.title FROM books
+             JOIN authors ON books.author_id = authors.id
+             WHERE title LIKE '%#{term}%' OR name LIKE '%#{term}%'"
+      ActiveRecord::Base.connection.execute(sql)
+    end
+
   end
 end
