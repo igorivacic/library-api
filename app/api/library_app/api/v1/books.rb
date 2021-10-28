@@ -51,6 +51,24 @@ class LibraryApp::API::V1::Books < Grape::API
       end
     end
 
+    desc 'Update a Book'
+    params do
+      requires :title, type: String, desc: 'Title'
+      requires :number_of_hard_copies, type: String, desc: 'Number of hard copies'
+      requires :author_id, type: Integer, desc: 'Author'
+    end
+    put ':id/edit' do
+      if params['title'] == '' || params['number_of_hard_copies'] == '' || params['author_id'] == ''
+        error!('Bad parameters!',
+               400)
+      end
+      book = Book.find(params[:id])
+      book.update(title: params[:title], number_of_hard_copies: params[:number_of_hard_copies],
+                  author_id: params[:author_id])
+      status 201
+      { data: { title: book.title } }
+    end
+
     get 'search' do
       term = params[:term]
       sql = "SELECT authors.name, books.title FROM books
