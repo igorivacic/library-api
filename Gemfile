@@ -18,7 +18,8 @@ gem 'puma', '~> 3.11'
 
 # Devise
 gem 'devise'
-
+# Dorkeeper gem
+gem 'doorkeeper'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
