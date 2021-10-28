@@ -28,7 +28,7 @@ class LibraryApp::API::V1::Books < Grape::API
     end
 
     desc 'Get All Books'
-    get "", skip_filter: :authenticate do
+    get '', skip_filter: :authenticate do
       status 200
       { data: { book: Book.all } }
     end
@@ -74,6 +74,36 @@ class LibraryApp::API::V1::Books < Grape::API
              JOIN authors ON books.author_id = authors.id
              WHERE title LIKE '%#{term}%' OR name LIKE '%#{term}%'"
       ActiveRecord::Base.connection.execute(sql)
+    end
+
+    desc 'Loan a book'
+    params do
+      requires :user_id, type: Integer, desc: 'User Id'
+    end
+    post ':id/loan' do
+      book = Book.find(params[:id]).loan(params[:user_id])
+      if book.include? 'Error'
+        status 400
+        book
+      else
+        status 200
+        book
+      end
+    end
+
+    desc 'Return a book'
+    params do
+      requires :user_id, type: Integer, desc: 'User Id'
+    end
+    post ':id/return-book' do
+      book = Book.find(params[:id]).return_book(params[:user_id])
+      if book.include? 'Error'
+        status 400
+        book
+      else
+        status 200
+        book
+      end
     end
   end
 end
