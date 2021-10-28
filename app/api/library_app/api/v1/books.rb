@@ -28,6 +28,11 @@ class LibraryApp::API::V1::Books < Grape::API
       end
     end
 
+    desc 'Get All Books'
+    get "",skip_filter: :authenticate do
+      status 200
+      { data: { book: Book.all } }
+    end
 
   end
 end
