@@ -15,8 +15,7 @@ class LibraryApp::API::V1::Books < Grape::API
     end
     post :new do
       if params['title'] == '' || params['number_of_hard_copies'] == '' || params['author_id'] == ''
-        error!('Bad parameters!',
-               400)
+        error!('Bad parameters!', 400)
       end
       book = Book.new(params)
       if book.save!
@@ -31,24 +30,6 @@ class LibraryApp::API::V1::Books < Grape::API
     get '', skip_filter: :authenticate do
       status 200
       { data: { book: Book.all } }
-    end
-
-    desc 'Get a Book'
-    get ':id', skip_filter: :authenticate do
-      book = Book.find(params[:id])
-      { data: { book: book } }
-      status 200
-    end
-
-    desc 'Delete a Book'
-    delete ':id' do
-      book = Book.find(params[:id])
-      if book.destroy
-        status 200
-        'Book was successfully destroyed.'
-      else
-        status 400
-      end
     end
 
     desc 'Update a Book'
@@ -103,6 +84,24 @@ class LibraryApp::API::V1::Books < Grape::API
       else
         status 200
         book
+      end
+    end
+
+    desc 'Get a Book'
+    get ':id', skip_filter: :authenticate do
+      book = Book.find(params[:id])
+      status 200
+      { data: { book: book } }
+    end
+
+    desc 'Delete a Book'
+    delete ':id' do
+      book = Book.find(params[:id])
+      if book.destroy
+        status 200
+        'Book was successfully destroyed.'
+      else
+        status 400
       end
     end
   end

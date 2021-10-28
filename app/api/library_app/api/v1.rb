@@ -26,4 +26,5 @@ class LibraryApp::API::V1 < Grape::API
 
   mount Base
   mount Books
+  mount Users
 end

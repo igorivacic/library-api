@@ -16,7 +16,7 @@ class LibraryApp::API::V1::Base < Grape::API
 
     post 'authenticate', skip_filter: :authenticate do
       user = User.find_for_authentication(email: params[:email])
-      if user.valid_password?(params[:password])
+      if user&.valid_password?(params[:password])
         access_token = generate_user_token(user)
         status 200
         {
