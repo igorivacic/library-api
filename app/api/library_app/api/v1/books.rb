@@ -34,6 +34,23 @@ class LibraryApp::API::V1::Books < Grape::API
       { data: { book: Book.all } }
     end
 
+    desc 'Get a Book'
+    get ':id', skip_filter: :authenticate do
+      book = Book.find(params[:id])
+      status 200
+      { book: { book: book } }
+    end
+
+    desc 'Delete a Book'
+    delete ':id' do
+      book = Book.find(params[:id])
+      if book.destroy
+        status 200
+      else
+        status 400
+      end
+    end
+
     get 'search' do
       term = params[:term]
       sql = "SELECT authors.name, books.title FROM books
