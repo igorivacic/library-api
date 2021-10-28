@@ -20,6 +20,10 @@ gem 'puma', '~> 3.11'
 gem 'devise'
 # Dorkeeper gem
 gem 'doorkeeper'
+# Grape and swagger API
+gem 'grape'
+gem 'grape-swagger', '~> 0.27.3'
+gem 'swagger-docs'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
