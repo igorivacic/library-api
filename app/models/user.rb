@@ -7,6 +7,10 @@ class User < ApplicationRecord
     Loan.where(user: self, return_date: nil).count < 3
   end
 
+  def druga_metoda
+
+  end
+
   def loans
     Loan.where(user_id: id)
   end
