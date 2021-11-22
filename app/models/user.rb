@@ -7,7 +7,7 @@ class User < ApplicationRecord
     Loan.where(user: self, return_date: nil).count < 3
   end
 
-  def igor
+  def druga_metoda
 
   end
 
